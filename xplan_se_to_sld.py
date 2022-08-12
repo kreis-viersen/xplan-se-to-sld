@@ -22,6 +22,7 @@ Python script
 from lxml import etree
 import pathlib
 
+#  Verzeichns mit SE-Dateien (Endung .xml)
 se_directory = 'D:/se/'
 
 for xml_file in pathlib.Path(se_directory).glob('*.xml'):
@@ -29,12 +30,16 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
     filename = xml_file.name
 
     name_without_ext = filename.split(".")[0]
+    # Wandel das Prefix in Großbuchstaben (z.B. bp -> BP)
     name_without_ext = name_without_ext[0].upper() + name_without_ext[1].upper() + name_without_ext[2:]
+    # Name und Pfad der erzeugten SLD-Datei
     new_file_path = se_directory + name_without_ext + '.sld'
 
+    # SE-Datei parsen
     tree = etree.parse(se_directory + filename)
     root_1 = tree.getroot()
 
+    # Ergänze SLD-"Hülle"
     xml_2 = '''<sld:StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld
     StyledLayerDescriptor.xsd" xmlns:sld="http://www.opengis.net/sld"
     xmlns:se="http://www.opengis.net/se"
@@ -54,9 +59,12 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
     user_style = named_layer.find('{http://www.opengis.net/sld}UserStyle')
     user_style.append(root_1)
 
+    # Entferne substrings xplan: und Code, so wird z.B. aus xplan:allgArtDerBaulNutzungCode -> allgArtDerBaulNutzung.
+    # Dann passt das zu den Feldnamen nach dem XPlanGML Import in QGIS (attributbasiertes Styling).
     for property_name in root_2.iter('{http://www.opengis.net/ogc}PropertyName'):
         property_name.text = property_name.text.replace('xplan:', '').replace('Code', '')
 
+    # Verwende uom-Attribut gemäß SE-Spezifikation, ref: https://gitlab.opencode.de/diplanung/ozgxplanung/-/issues/1#note_2177
     symbolizers = ['TextSymbolizer', 'PointSymbolizer', 'LineSymbolizer', 'PolygonSymbolizer']
 
     for symbolizer in symbolizers:
@@ -64,5 +72,6 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
             if 'uom' in symbolizer.attrib and symbolizer.attrib['uom'] == 'meter':
                 symbolizer.attrib['uom'] = 'http://www.opengeospatial.org/se/units/metre'
 
+    #Formatiere und schreibe SLD in das Verzeichnis mit den SE-Dateien
     etree.indent(tree_2, space="\t", level=0)
     tree_2.write(new_file_path, encoding = "UTF-8", xml_declaration = True)
