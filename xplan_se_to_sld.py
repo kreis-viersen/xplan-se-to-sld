@@ -57,5 +57,12 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
     for property_name in root_2.iter('{http://www.opengis.net/ogc}PropertyName'):
         property_name.text = property_name.text.replace('xplan:', '').replace('Code', '')
 
+    symbolizers = ['TextSymbolizer', 'PointSymbolizer', 'LineSymbolizer', 'PolygonSymbolizer']
+
+    for symbolizer in symbolizers:
+        for symbolizer in root_2.iter('{http://www.opengis.net/se}' + symbolizer):
+            if 'uom' in symbolizer.attrib and symbolizer.attrib['uom'] == 'meter':
+                symbolizer.attrib['uom'] = 'http://www.opengeospatial.org/se/units/metre'
+
     etree.indent(tree_2, space="\t", level=0)
     tree_2.write(new_file_path, encoding = "UTF-8", xml_declaration = True)
