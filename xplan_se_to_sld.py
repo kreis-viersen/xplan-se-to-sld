@@ -40,7 +40,26 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
     root_1 = tree.getroot()
 
     # Ergänze SLD-"Hülle"
-    xml_2 = '''<sld:StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld
+    xml_2 = '''<!--
+    Based on SE-Styles from https://gitlab.opencode.de/diplanung/ozgxplanung/
+    Modified with https://github.com/kreis-viersen/xplan-se-to-sld
+
+    Copyright (C) 2008 - 2022 lat/lon GmbH, info@lat-lon.de, www.lat-lon.de
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    -->
+    <sld:StyledLayerDescriptor version="1.1.0" xsi:schemaLocation="http://www.opengis.net/sld
     StyledLayerDescriptor.xsd" xmlns:sld="http://www.opengis.net/sld"
     xmlns:se="http://www.opengis.net/se"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
