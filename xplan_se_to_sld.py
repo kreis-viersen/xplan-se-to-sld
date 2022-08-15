@@ -30,8 +30,6 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
     filename = xml_file.name
 
     name_without_ext = filename.split(".")[0]
-    # Wandel das Prefix in Großbuchstaben (z.B. bp -> BP)
-    name_without_ext = name_without_ext[0].upper() + name_without_ext[1].upper() + name_without_ext[2:]
     # Name und Pfad der erzeugten SLD-Datei
     new_file_path = se_directory + name_without_ext + '.sld'
 
