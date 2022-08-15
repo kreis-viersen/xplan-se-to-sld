@@ -39,7 +39,7 @@ for xml_file in pathlib.Path(se_directory).glob('*.xml'):
 
     # Ergänze SLD-"Hülle"
     xml_2 = '''<!--
-    Based on SE-Styles from https://gitlab.opencode.de/diplanung/ozgxplanung/
+    Based on SE-Styles from https://gitlab.opencode.de/diplanung/ozgxplanung/ (v5.0.3)
     Modified with https://github.com/kreis-viersen/xplan-se-to-sld
 
     Copyright (C) 2008 - 2022 lat/lon GmbH, info@lat-lon.de, www.lat-lon.de
